@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Precision Converter</title>
+</head>
+<body>
+    <h2>Single Precision Converter</h2>
+    <label for="numberInput">Single Precision: </label>
+    <input type="text" id="numberInput">
+    <button onclick="convertNumber()">Convert</button>
+    
+    <div>
+        <strong>Decimal:</strong> <span id="decimal"></span> |
+        <strong>Binary:</strong> <span id="binary"></span> |
+        <strong>Hexadecimal:</strong> <span id="hexadecimal"></span> |
+        <strong>Float:</strong> <span id="float"></span>
+    </div>
+
+    <script>
+        async function convertNumber() {
+            let number = document.getElementById("numberInput").value;
+            
+            let response = await fetch('/convert', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ number: number })
+            });
+
+            let data = await response.json();
+            if (data.success) {
+                document.getElementById("decimal").innerText = data.decimal;
+                document.getElementById("binary").innerText = data.binary;
+                document.getElementById("hexadecimal").innerText = data.hexadecimal;
+                document.getElementById("float").innerText = data.float;
+            } else {
+                alert("Invalid input! Please enter a valid number.");
+            }
+        }
+    </script>
+</body>
+</html>
